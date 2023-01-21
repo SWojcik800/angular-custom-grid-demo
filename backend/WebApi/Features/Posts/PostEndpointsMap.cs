@@ -10,6 +10,13 @@ namespace WebApi.Posts
             {
                 var posts = new List<Post>()
                 {
+                    new Post()
+                    {
+                        Id = 1,
+                        Title = "test",
+                        Body = "Test",
+                        CreationTime = DateTime.Now,
+                    }
                 };
 
                 return posts;
