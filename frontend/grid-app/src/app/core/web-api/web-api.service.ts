@@ -10,9 +10,9 @@ export class WebApiService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  public get = (url: string, params?: any): Observable<any> => this._httpClient.get(environment.wepApiUrl+url, params);
-  public post = (url: string, params?: any): Observable<any> => this._httpClient.post(environment.wepApiUrl+url, params);
-  public put = (url: string, params: any): Observable<any> => this._httpClient.put(environment.wepApiUrl+url, params);
-  public patch = (url: string, params: any): Observable<any> => this._httpClient.patch(environment.wepApiUrl+url, params);
-  public delete = (url: string, params: any): Observable<any> => this._httpClient.delete(environment.wepApiUrl+url, params);
+  public get = (url: string, params?: any): Observable<any> => this._httpClient.get(environment.webApiUrl+url, params);
+  public post = (url: string, params?: any): Observable<any> => this._httpClient.post(environment.webApiUrl+url, params);
+  public put = (url: string, params: any): Observable<any> => this._httpClient.put(environment.webApiUrl+url, params);
+  public patch = (url: string, params: any): Observable<any> => this._httpClient.patch(environment.webApiUrl+url, params);
+  public delete = (url: string, params: any): Observable<any> => this._httpClient.delete(environment.webApiUrl+url, params);
 }

@@ -10,13 +10,10 @@ import { Observable, tap } from 'rxjs';
 })
 export class AppComponent {
   title = 'grid-app';
-  data: Observable<any> = this._api.get('/posts');
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
+  data$: Observable<any> = this._api.get('/posts');
 
   constructor(private _api: WebApiService) {
-    this.data.subscribe((x) => {
-      this.dataSource.data = x;
-    })
-    
+
+
   }
 }
