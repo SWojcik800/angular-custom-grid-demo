@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { WebApiService } from '@core/web-api';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +9,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'grid-app';
-  
+  data: Observable<any> = this._api.get('/posts');
+
+  constructor(private _api: WebApiService) {
+
+    
+  }
 }
