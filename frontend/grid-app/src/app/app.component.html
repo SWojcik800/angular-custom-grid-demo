@@ -1,8 +1,7 @@
-<ng-container *ngIf="data$ | async as data">
-  <app-custom-table [data]="data">
+
+  <app-custom-table [getDataFunc]="getData" [serverSide]="true">
       <app-custom-column fieldName="id" header="Id" [sortable]="true"></app-custom-column>
       <app-custom-column fieldName="title" header="Title" [sortable]="true"></app-custom-column>
       <app-custom-column fieldName="body" header="Body" [sortable]="true"></app-custom-column>
       <app-custom-column fieldName="creatorUserId" header="Creator user id" ></app-custom-column>
   </app-custom-table>
-</ng-container>

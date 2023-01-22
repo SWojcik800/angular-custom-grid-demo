@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy, ContentChildren, EventEmitter, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ContentChildren, EventEmitter, Output, ViewChild } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { WebApiService } from '@core/web-api';
+import { Observable } from 'rxjs';
 import { CustomColumnComponent } from '../custom-column/custom-column.component';
+import { TableChangedEvent } from './models';
 
 @Component({
   selector: 'app-custom-table',
@@ -12,12 +15,13 @@ import { CustomColumnComponent } from '../custom-column/custom-column.component'
   styleUrls: ['./custom-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CustomTableComponent {
+export class CustomTableComponent implements AfterViewInit {
   @Input() data!: any;
   @Input() getItemsFunc: (data: any) => any[] = (data) => data;
+  @Input() getDataFunc!: (event: TableChangedEvent, additionalData?: any) => Observable<any>;
   @Input() getItemsCountFunc: (data: any) => number = (data: any) => data.length;
-  @Input() serverSidePaging: boolean = false;
-  @Input() serverSideSorting?: boolean = false;
+  @Input() serverSide: boolean = false;
+  @Input() additionalData?: any;
 
   @ContentChildren(CustomColumnComponent) columns!: QueryList<CustomColumnComponent>;
   @ViewChild(MatSort) sort!: MatSort;
@@ -40,32 +44,33 @@ export class CustomTableComponent {
     return this.getItemsFunc(this.data);
   }
 
-  constructor() { }
+  constructor(private _api: WebApiService) { }
 
   ngAfterViewInit() {
 
     this.dataSource = new MatTableDataSource<any>(this.items);
 
-    if(!this.serverSideSorting)
+    if(!this.serverSide)
+    {
       this.dataSource.sort = this.sort;
-
-    if(!this.serverSidePaging)
       this.dataSource.paginator = this.paginator;
-  }
+      this.data = this.getItemsFunc(this.data);
+      this.dataSource.data = this.data;
+      this.paginator.length = this.getItemsCountFunc(this.data);
+    } else {
+      const event: TableChangedEvent = this.getCurrentTableEvent();
 
-  protected refreshData(data: any): void {
-    const items = this.getItemsFunc(data);
-    const totalCount  = this.getItemsCountFunc(data);
+      this.getDataFunc(event, this.additionalData).subscribe((data) => {
+        this.data = this.getItemsFunc(data);
+        this.dataSource.data = this.data;
+        this.paginator.length = this.getItemsCountFunc(data);
+      });
 
-    if(totalCount != this.totalCount)
-        this.paginator.firstPage();
-
-    this.dataSource.data = items;
-    this.table.renderRows();
+    }
   }
 
   handleTableChanged(): void {
-    const event = {
+    const event: TableChangedEvent = {
       paging: {
         pageIndex: this.paginator.pageIndex,
         pageSize: this.paginator.pageSize
@@ -76,9 +81,43 @@ export class CustomTableComponent {
       }
     };
 
+    if(this.serverSide) {
+      this.getDataFunc(event, this.additionalData).subscribe((data: any) => {
+        this.data = data;
+      });
+    }
+
     this.tableChanged.emit(event);
   }
 
+  getCurrentTableEvent(): TableChangedEvent {
+    return ({
+      paging: {
+        pageIndex: this.paginator.pageIndex,
+        pageSize: this.paginator.pageSize
+      },
+      sorting: {
+        sortColumn: this.sort.active,
+        sortDirection: this.sort.direction
+      }
+    });
+  }
 
+  protected refreshData(additionalData: any): void {
+    const event: TableChangedEvent = this.getCurrentTableEvent();
+
+    this.getDataFunc(event, additionalData).subscribe((data) => {
+
+      const items = this.getItemsFunc(data);
+      const totalCount  = this.getItemsCountFunc(data);
+
+      this.data = items
+      this.dataSource.data = items
+      this.paginator.length = totalCount;
+
+    if(totalCount != this.totalCount)
+        this.paginator.firstPage();
+    });
+  }
 
 }
