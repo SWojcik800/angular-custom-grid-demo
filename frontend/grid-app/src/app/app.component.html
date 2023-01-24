@@ -1,7 +1,14 @@
 
-  <app-custom-table [getDataFunc]="getData" [serverSide]="true">
-      <app-custom-column fieldName="id" header="Id" [sortable]="true"></app-custom-column>
-      <app-custom-column fieldName="title" header="Title" [sortable]="true"></app-custom-column>
-      <app-custom-column fieldName="body" header="Body" [sortable]="true"></app-custom-column>
-      <app-custom-column fieldName="creatorUserId" header="Creator user id" ></app-custom-column>
+  <app-custom-table [getDataFunc]="getData" [serverSide]="false" [pageSizes]="[10,25,50]">
+    <app-column-defs>
+      <app-column fieldName="id" header="Id" [sortable]="true" ></app-column>
+      <app-column fieldName="title" header="Title" [sortable]="true"></app-column>
+      <app-column fieldName="body" header="Body" [sortable]="true"></app-column>
+      <app-column fieldName="creatorUserId" header="Creator user id" ></app-column>
+      <app-column fieldName="creationTime" header="Creation time" [template]="creationTimeTemplate"></app-column>
+    </app-column-defs>
   </app-custom-table>
+
+  <ng-template #creationTimeTemplate let-row>
+    {{row.creationTime}}
+  </ng-template>
