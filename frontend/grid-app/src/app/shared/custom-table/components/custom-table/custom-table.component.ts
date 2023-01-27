@@ -11,8 +11,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { WebApiService } from '@core/web-api';
-import { UntilDestroy } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BehaviorSubject, catchError, finalize, Observable } from 'rxjs';
 import { ColumnDefinitionsDirective } from '../../directives/app-column-definitions.directive';
 import { TableChangedEvent } from './models';
 
@@ -21,7 +21,7 @@ import { TableChangedEvent } from './models';
   selector: 'app-custom-table',
   templateUrl: './custom-table.component.html',
   styleUrls: ['./custom-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomTableComponent implements AfterViewInit {
   @Input() data!: any;
@@ -85,7 +85,9 @@ export class CustomTableComponent implements AfterViewInit {
     }
     const event: TableChangedEvent = this.currentTableEvent;
 
-    this.getDataFunc(event, this.additionalData).subscribe((data) => {
+    this.getDataFunc(event, this.additionalData).pipe(
+      untilDestroyed(this)
+    ).subscribe((data) => {
       this.data = this.getItemsFunc(data);
       this.dataSource.data = this.data;
       this.paginator.length = this.getItemsCountFunc(data);
@@ -96,7 +98,9 @@ export class CustomTableComponent implements AfterViewInit {
     const event: TableChangedEvent = this.currentTableEvent;
 
     if (this.serverSide) {
-      this.getDataFunc(event, this.additionalData).subscribe((data: any) => {
+      this.getDataFunc(event, this.additionalData).pipe(
+        untilDestroyed(this)
+      ).subscribe((data: any) => {
         this.data = data;
       });
     }
@@ -107,7 +111,9 @@ export class CustomTableComponent implements AfterViewInit {
   protected refreshData(additionalData: any): void {
     const event: TableChangedEvent = this.currentTableEvent;
 
-    this.getDataFunc(event, additionalData).subscribe((data) => {
+    this.getDataFunc(event, additionalData).pipe(
+      untilDestroyed(this)
+    ).subscribe((data) => {
       const items = this.getItemsFunc(data);
       const totalCount = this.getItemsCountFunc(data);
 
@@ -118,4 +124,5 @@ export class CustomTableComponent implements AfterViewInit {
       if (totalCount != this.totalCount) this.paginator.firstPage();
     });
   }
+
 }

@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
 import {  CustomTableComponent } from './components';
 import { MatSortModule } from '@angular/material/sort';
-import {MatIconModule} from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AppColumnDirective } from './directives/app-column.directive';
 import { ColumnDefinitionsDirective } from './directives/app-column-definitions.directive';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,8 @@ import { ColumnDefinitionsDirective } from './directives/app-column-definitions.
     CommonModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     CustomTableComponent,

@@ -21,4 +21,5 @@ export class AppComponent {
       sortColumn: event.sorting.sortColumn
     });
 
+    actionTriggered = (x: any) => console.log(x);
 }
