@@ -14,12 +14,7 @@ export class AppComponent {
   }
 
   getData = (event: TableChangedEvent): Observable<any>  =>
-    this._api.get('/posts', {
-      offset: event.paging.pageIndex*event.paging.pageSize,
-      limit: event.paging.pageSize,
-      sortDir: event.sorting.sortDirection,
-      sortColumn: event.sorting.sortColumn
-    });
+    this._api.get('/posts');
 
     actionTriggered = (x: any) => console.log(x);
 }
