@@ -58,13 +58,15 @@ export class CustomTableComponent implements AfterViewInit {
   }
 
   public get items() {
-    return this.getItemsFunc(this.data);
+    if(this.data)
+      return this.getItemsFunc(this.data);
+      return [];
   }
 
   public get currentTableEvent() {
     return {
       paging: {
-        pageIndex: this.paginator.pageIndex,
+        pageIndex: this.paginator.pageIndex+1,
         pageSize: this.paginator.pageSize,
       },
       sorting: {
@@ -88,6 +90,7 @@ export class CustomTableComponent implements AfterViewInit {
     this.getDataFunc(event, this.additionalData).pipe(
       untilDestroyed(this)
     ).subscribe((data) => {
+      console.log(data);
       this.data = this.getItemsFunc(data);
       this.dataSource.data = this.data;
       this.paginator.length = this.getItemsCountFunc(data);
@@ -96,12 +99,13 @@ export class CustomTableComponent implements AfterViewInit {
 
   handleTableChanged(): void {
     const event: TableChangedEvent = this.currentTableEvent;
-
     if (this.serverSide) {
       this.getDataFunc(event, this.additionalData).pipe(
         untilDestroyed(this)
       ).subscribe((data: any) => {
         this.data = data;
+        this.dataSource.data = this.items;
+        this.paginator.length = this.totalCount;
       });
     }
 
@@ -120,7 +124,6 @@ export class CustomTableComponent implements AfterViewInit {
       this.data = items;
       this.dataSource.data = items;
       this.paginator.length = totalCount;
-
       if (totalCount != this.totalCount) this.paginator.firstPage();
     });
   }

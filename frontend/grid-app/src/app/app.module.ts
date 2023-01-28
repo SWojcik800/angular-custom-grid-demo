@@ -19,11 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
     AppRoutingModule,
     BrowserAnimationsModule,
     CoreModule,
-    CommonModule,
-    CustomTableModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

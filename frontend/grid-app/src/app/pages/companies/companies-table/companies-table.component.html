@@ -1,0 +1,14 @@
+
+  <div class="table-container">
+    <app-custom-table [getDataFunc]="getData" [getItemsFunc]="getItems" [getItemsCountFunc]="getTotalCount" [serverSide]="true"  [pageSizes]="[10,25,50]">
+      <app-column-defs>
+        <app-column fieldName="id" header="Id" [sortable]="true" ></app-column>
+        <app-column fieldName="name" header="Company name" [sortable]="true" ></app-column>
+        <app-column fieldName="country" header="Country" [sortable]="true" ></app-column>
+        <app-column fieldName="state" header="State" [sortable]="true" ></app-column>
+        <app-column fieldName="street" header="Street" [sortable]="true" ></app-column>
+        <app-column fieldName="street_number" header="Street number" [sortable]="true" ></app-column>
+      </app-column-defs>
+    </app-custom-table>
+
+  </div>

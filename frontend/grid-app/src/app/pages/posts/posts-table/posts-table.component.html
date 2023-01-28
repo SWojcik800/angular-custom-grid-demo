@@ -1,0 +1,28 @@
+
+  <div class="table-container">
+    <app-custom-table [getDataFunc]="getData" [serverSide]="false" [pageSizes]="[10,25,50]">
+      <app-column-defs>
+        <app-column fieldName="id" header="Id" [sortable]="true" ></app-column>
+        <app-column fieldName="title" header="Title" [sortable]="true"></app-column>
+        <app-column fieldName="body" header="Body" [sortable]="true"></app-column>
+        <app-column fieldName="creationTime" header="Creation time" [sortable]="true" [template]="creationTimeTemplate"></app-column>
+        <app-column fieldName="creatorUserId" header="Creator user id" [sortable]="true"></app-column>
+        <app-column fieldName="actions" header="Actions" [template]="actionsTemplate"></app-column>
+      </app-column-defs>
+    </app-custom-table>
+
+    <ng-template #creationTimeTemplate let-row>
+      {{ row.creationTime | date: 'dd-MM-YYYY' }}
+    </ng-template>
+
+    <ng-template #actionsTemplate let-row>
+      <button mat-mini-fab color="primary" [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="actionTriggered(row)">Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+    </ng-template>
+
+  </div>
