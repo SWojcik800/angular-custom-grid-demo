@@ -19,6 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
     AppRoutingModule,
     BrowserAnimationsModule,
     CoreModule,
+    MatButtonModule,
     CommonModule
   ],
   providers: [],

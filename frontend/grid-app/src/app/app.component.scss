@@ -1,0 +1,15 @@
+.btn-container {
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  column-gap: 0.25rem;
+  padding: 1rem;
+
+  .btn-server-side {
+    grid-column: 2;
+  }
+
+  .btn-client-side {
+    grid-column: 3;
+  }
+
+}
