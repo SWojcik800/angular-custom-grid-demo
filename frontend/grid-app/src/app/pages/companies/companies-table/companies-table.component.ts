@@ -13,7 +13,7 @@ export class CompaniesTableComponent {
   constructor(private _api: WebApiService) { }
 
   getData = (event: TableChangedEvent): Observable<any>  =>
-  this._api.getPaginated('/companies', {
+  this._api.get('/companies', {
     _page: event.paging.pageIndex,
     _limit: event.paging.pageSize,
     _order: event.sorting.sortDirection,

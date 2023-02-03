@@ -9,10 +9,13 @@ import { CustomTableModule } from './shared';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { ErrorDialogComponent } from './shared/error-dialog/error-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ErrorDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -20,9 +23,10 @@ import { MatMenuModule } from '@angular/material/menu';
     BrowserAnimationsModule,
     CoreModule,
     MatButtonModule,
-    CommonModule
+    CommonModule,
+    MatDialogModule
   ],
-  providers: [],
+  providers: [MatDialog],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
