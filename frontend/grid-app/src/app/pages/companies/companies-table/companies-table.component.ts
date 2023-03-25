@@ -20,9 +20,10 @@ export class CompaniesTableComponent {
     _sort: event.sorting.sortColumn
   });
 
-  getItems = (res: any) => res.body;
+  getItems = (res: any) => res;
 
-  getTotalCount = (res: any) => res.headers.get('X-Total-Count');
+  //TODO add support for backend pagination for json-server
+  getTotalCount = (res: any) => 40;
 
 
 }
